@@ -8,9 +8,9 @@ namespace GeometriaServices;
 public class FigurasService : IFigurasService
 {
     readonly private FigurasMSQLDAL _figurasDao;
-    private readonly ITransaction<SqlTransaction> _transaction;
+    private readonly ITransactionDAL<SqlTransaction> _transaction;
 
-    public FigurasService(FigurasMSQLDAL personasDao, ITransaction<SqlTransaction> transaction)
+    public FigurasService(FigurasMSQLDAL personasDao, ITransactionDAL<SqlTransaction> transaction)
     {
         _figurasDao = personasDao;
         _transaction = transaction;

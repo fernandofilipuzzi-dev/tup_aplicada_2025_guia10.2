@@ -15,7 +15,7 @@ public class FigurasMSQLDAL : IBaseDAL<FiguraModel, int, SqlTransaction>
         _connectionString = options.Value.DefaultConnection;
     }
 
-    async public Task<List<FiguraModel>> GetAll(ITransaction<SqlTransaction>? transaccion = null)
+    async public Task<List<FiguraModel>> GetAll(ITransactionDAL<SqlTransaction>? transaccion = null)
     {
         List<FiguraModel> figuras = new List<FiguraModel>();
 
@@ -46,7 +46,7 @@ ORDER BY f.Id
         return figuras;
     }
 
-    async public Task<FiguraModel?> GetByKey(int idFigura, ITransaction<SqlTransaction>? transaccion = null)
+    async public Task<FiguraModel?> GetByKey(int idFigura, ITransactionDAL<SqlTransaction>? transaccion = null)
     {
         FiguraModel figura = null;
 
@@ -87,7 +87,7 @@ ORDER BY f.Area
         return figura;
     }
 
-    async public Task<FiguraModel?> Add(FiguraModel nuevo, ITransaction<SqlTransaction>? transaccion = null)
+    async public Task<FiguraModel?> Add(FiguraModel nuevo, ITransactionDAL<SqlTransaction>? transaccion = null)
     {
         int tipo = 0;
         double? ancho = null;
@@ -134,7 +134,7 @@ VALUES
         return nuevo;
     }
 
-    async public Task<bool> Save(FiguraModel entidad, ITransaction<SqlTransaction>? transaccion = null)
+    async public Task<bool> Save(FiguraModel entidad, ITransactionDAL<SqlTransaction>? transaccion = null)
     {
         int id = 0;
         double? area = null;
@@ -181,7 +181,7 @@ WHERE Id=@Id_Figura
         return false;
     }
 
-    async public Task<bool> Remove(int idFigura, ITransaction<SqlTransaction>? transaccion = null)
+    async public Task<bool> Remove(int idFigura, ITransactionDAL<SqlTransaction>? transaccion = null)
     {
         string query = @"
 DELETE 
@@ -210,7 +210,7 @@ WHERE Id=@Id_Figura
         return false;
     }
 
-    private async Task<SqlConnection> GetOpenedConnectionAsync(ITransaction<SqlTransaction>? transaccion)
+    private async Task<SqlConnection> GetOpenedConnectionAsync(ITransactionDAL<SqlTransaction>? transaccion)
     {
         var conexion = transaccion?.GetInternalTransaction()?.Connection ?? new SqlConnection(_connectionString);
         if (conexion.State == System.Data.ConnectionState.Closed)

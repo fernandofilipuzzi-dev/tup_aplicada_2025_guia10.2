@@ -5,23 +5,23 @@ using FigurasModels.DALs.Utils;
 
 namespace GeometriaListDALsImpl;
 
-public class FigurasListDAL : IBaseDAL<FiguraModel, int, ListTransaction>
+public class FigurasListDAL : IBaseDAL<FiguraModel, int, ListTransactionDAL>
 {
     int id = 1;
     List<FiguraModel> figuras = new List<FiguraModel>();
  
-    async public Task<List<FiguraModel>> GetAll(ITransaction<ListTransaction>? transaccion = null)
+    async public Task<List<FiguraModel>> GetAll(ITransactionDAL<ListTransactionDAL>? transaccion = null)
     {
         return await Task.FromResult(figuras);
     }
 
-    async public Task<FiguraModel?> GetByKey(int idFigura, ITransaction<SqlTransaction>? transaccion = null)
+    async public Task<FiguraModel?> GetByKey(int idFigura, ITransactionDAL<SqlTransaction>? transaccion = null)
     {
         FiguraModel figura = (from f in figuras where f.Id == idFigura select f).FirstOrDefault();
         return await Task.FromResult(figura);
     }
 
-    async public Task<FiguraModel?> Add(FiguraModel nuevo, ITransaction<SqlTransaction>? transaccion = null)
+    async public Task<FiguraModel?> Add(FiguraModel nuevo, ITransactionDAL<SqlTransaction>? transaccion = null)
     {
         FiguraModel f = await GetByKey(nuevo.Id ?? 0);
 
@@ -34,7 +34,7 @@ public class FigurasListDAL : IBaseDAL<FiguraModel, int, ListTransaction>
         return null;
     }
 
-    async public Task<bool> Save(FiguraModel entidad, ITransaction<SqlTransaction>? transaccion = null)
+    async public Task<bool> Save(FiguraModel entidad, ITransactionDAL<SqlTransaction>? transaccion = null)
     {
         FiguraModel f = await GetByKey(entidad.Id ?? 0);
 
@@ -46,7 +46,7 @@ public class FigurasListDAL : IBaseDAL<FiguraModel, int, ListTransaction>
         return false;
     }
 
-    async public Task<bool> Remove(int idEntidad, ITransaction<SqlTransaction>? transaccion = null)
+    async public Task<bool> Remove(int idEntidad, ITransactionDAL<SqlTransaction>? transaccion = null)
     {
         FiguraModel f = await GetByKey(idEntidad);
 

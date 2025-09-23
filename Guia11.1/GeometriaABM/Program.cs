@@ -15,7 +15,7 @@ var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").B
 services.Configure<ConnectionStrings>(configuration.GetSection("ConnectionStrings"));
 #endregion
 
-services.AddScoped<ITransaction<SqlTransaction>, MSQLTransaction>();
+services.AddScoped<ITransactionDAL<SqlTransaction>, MSQLTransaction>();
 
 #region registro de DALs
 services.AddSingleton<FigurasMSQLDAL>();

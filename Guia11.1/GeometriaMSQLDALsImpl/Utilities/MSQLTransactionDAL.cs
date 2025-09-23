@@ -4,13 +4,13 @@ using Microsoft.Extensions.Options;
 
 namespace GeometriaMSQLDALsImpl.Utilities;
 
-public class MSQLTransaction : ITransaction<SqlTransaction>
+public class MSQLTransactionDAL : ITransactionDAL<SqlTransaction>
 {
     private SqlTransaction? _transaccion;
     private SqlConnection? _sqlConnection;
     private readonly string _connectionString;
 
-    public MSQLTransaction(IOptions<ConnectionStrings> options)
+    public MSQLTransactionDAL(IOptions<ConnectionStrings> options)
     {
         _connectionString = options.Value.DefaultConnection
             ?? throw new ArgumentNullException(nameof(options.Value.DefaultConnection));
