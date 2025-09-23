@@ -1,12 +1,11 @@
 ﻿using FigurasModels.DALs.Utils;
+using GeometriaListDALsImpl.Utilities;
 
 namespace FigurasModels.DALs.MSQL.Utils;
 
-public class ListTransactionDAL : ITransactionDAL<ListTransactionDAL>
+public class ListTransactionDAL : ITransactionDAL<ListTransaction>
 {
-    private ListTransactionDAL _transaccion;
-
-    private readonly SqlConnection _sqlConnection;
+    private ListTransaction _transaccion;
 
     public ListTransactionDAL()
     {
@@ -37,7 +36,7 @@ public class ListTransactionDAL : ITransactionDAL<ListTransactionDAL>
         
     }
 
-    public SqlTransaction GetInternalTransaction()
+    public ListTransaction GetInternalTransaction()
     {
         return _transaccion;
     }

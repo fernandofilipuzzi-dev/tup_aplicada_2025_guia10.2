@@ -15,13 +15,13 @@ public class FigurasListDAL : IBaseDAL<FiguraModel, int, ListTransactionDAL>
         return await Task.FromResult(figuras);
     }
 
-    async public Task<FiguraModel?> GetByKey(int idFigura, ITransactionDAL<SqlTransaction>? transaccion = null)
+    async public Task<FiguraModel?> GetByKey(int idFigura, ITransactionDAL<ListTransactionDAL>? transaccion = null)
     {
         FiguraModel figura = (from f in figuras where f.Id == idFigura select f).FirstOrDefault();
         return await Task.FromResult(figura);
     }
 
-    async public Task<FiguraModel?> Add(FiguraModel nuevo, ITransactionDAL<SqlTransaction>? transaccion = null)
+    async public Task<FiguraModel?> Add(FiguraModel nuevo, ITransactionDAL<ListTransactionDAL>? transaccion = null)
     {
         FiguraModel f = await GetByKey(nuevo.Id ?? 0);
 
@@ -34,7 +34,7 @@ public class FigurasListDAL : IBaseDAL<FiguraModel, int, ListTransactionDAL>
         return null;
     }
 
-    async public Task<bool> Save(FiguraModel entidad, ITransactionDAL<SqlTransaction>? transaccion = null)
+    async public Task<bool> Save(FiguraModel entidad, ITransactionDAL<ListTransactionDAL>? transaccion = null)
     {
         FiguraModel f = await GetByKey(entidad.Id ?? 0);
 
@@ -46,7 +46,7 @@ public class FigurasListDAL : IBaseDAL<FiguraModel, int, ListTransactionDAL>
         return false;
     }
 
-    async public Task<bool> Remove(int idEntidad, ITransactionDAL<SqlTransaction>? transaccion = null)
+    async public Task<bool> Remove(int idEntidad, ITransactionDAL<ListTransactionDAL>? transaccion = null)
     {
         FiguraModel f = await GetByKey(idEntidad);
 

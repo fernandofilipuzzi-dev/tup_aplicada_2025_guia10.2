@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FigurasModels\GeometriaModels.csproj" />
     <ProjectReference Include="..\GeometriaModels\GeometriaModels.csproj" />
   </ItemGroup>
 

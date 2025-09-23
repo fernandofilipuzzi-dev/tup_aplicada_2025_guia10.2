@@ -1,12 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+namespace GeometriaListDALsImpl.Utilities;
 
-namespace GeometriaListDALsImpl.Utilities
+public class ListTransaction
 {
-    internal class ListTransaction
+    internal void Commit()
     {
+        throw new NotImplementedException();
+    }
+
+    internal void Rollback()
+    {
+        throw new NotImplementedException();
     }
 }

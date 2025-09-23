@@ -1,5 +1,5 @@
 using Ejercicio.Models;
-using FigurasModels.Services;
+using GeometriaServices;
 using System.Drawing.Drawing2D;
 
 namespace FigurasABM;

@@ -1,8 +1,8 @@
 using FigurasABM;
-using FigurasModels.DALs.MSQL;
-using FigurasModels.DALs.MSQL.Utils;
 using FigurasModels.DALs.Utils;
-using FigurasModels.Services;
+using GeometriaMSQLDALsImpl;
+using GeometriaMSQLDALsImpl.Utilities;
+using GeometriaServices;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,7 +15,7 @@ var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").B
 services.Configure<ConnectionStrings>(configuration.GetSection("ConnectionStrings"));
 #endregion
 
-services.AddScoped<ITransactionDAL<SqlTransaction>, MSQLTransaction>();
+services.AddScoped<ITransactionDAL<SqlTransaction>, MSQLTransactionDAL>();
 
 #region registro de DALs
 services.AddSingleton<FigurasMSQLDAL>();
