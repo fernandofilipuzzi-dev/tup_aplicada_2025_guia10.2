@@ -1,9 +1,10 @@
 ﻿using Ejercicio.Models;
+using FigurasModels.DALs;
 using FigurasModels.DALs.Utils;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
 
-namespace FigurasModels.DALs.MSQL;
+namespace GeometriaMSQLDALsImpl;
 
 public class FigurasMSQLDAL : IBaseDAL<FiguraModel, int, SqlTransaction>
 {

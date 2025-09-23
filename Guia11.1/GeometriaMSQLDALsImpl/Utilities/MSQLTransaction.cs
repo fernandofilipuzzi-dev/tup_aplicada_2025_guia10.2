@@ -2,7 +2,7 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
 
-namespace FigurasModels.DALs.MSQL.Utils;
+namespace GeometriaMSQLDALsImpl.Utilities;
 
 public class MSQLTransaction : ITransaction<SqlTransaction>
 {

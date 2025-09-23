@@ -1,12 +1,9 @@
-﻿
-
-
-using Ejercicio.Models;
-using FigurasModels.DALs.MSQL;
+﻿using Ejercicio.Models;
 using FigurasModels.DALs.Utils;
-using FigurasModels.Services;
+using GeometriaMSQLDALsImpl;
 using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
+
+namespace GeometriaServices;
 
 public class FigurasService : IFigurasService
 {

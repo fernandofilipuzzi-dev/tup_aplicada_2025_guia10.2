@@ -1,16 +1,10 @@
 ﻿using FigurasModels.DALs.Utils;
-using Microsoft.Data.SqlClient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FigurasModels.DALs.MSQL.Utils;
 
-public class ListTransaction : ITransaction<SqlTransaction>
+public class ListTransaction : ITransaction<ListTransaction>
 {
-    private SqlTransaction _transaccion;
+    private ListTransaction _transaccion;
 
     private readonly SqlConnection _sqlConnection;
 

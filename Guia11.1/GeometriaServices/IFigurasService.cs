@@ -1,7 +1,7 @@
 ﻿
 using Ejercicio.Models;
 
-namespace FigurasModels.Services;
+namespace GeometriaServices;
 
 public interface IFigurasService
 {

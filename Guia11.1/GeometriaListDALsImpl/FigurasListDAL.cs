@@ -1,16 +1,16 @@
 ﻿using Ejercicio.Models;
 using FigurasModels.DALs;
+using FigurasModels.DALs.MSQL.Utils;
 using FigurasModels.DALs.Utils;
-using Microsoft.Data.SqlClient;
 
-namespace Ejercicio.DALs.List;
+namespace GeometriaListDALsImpl;
 
-public class FigurasListDAL : IBaseDAL<FiguraModel, int, SqlTransaction>
+public class FigurasListDAL : IBaseDAL<FiguraModel, int, ListTransaction>
 {
     int id = 1;
     List<FiguraModel> figuras = new List<FiguraModel>();
  
-    async public Task<List<FiguraModel>> GetAll(ITransaction<SqlTransaction>? transaccion = null)
+    async public Task<List<FiguraModel>> GetAll(ITransaction<ListTransaction>? transaccion = null)
     {
         return await Task.FromResult(figuras);
     }
