@@ -2,11 +2,11 @@
 
 namespace FigurasModels.DALs;
 
-public interface IBaseDAL<T, K, M>
+public interface IBaseDAL<E, K, T>
 {
-    Task<List<T>> GetAll(ITransactionDAL<M>? transaccion = null);
-    Task<T?> GetByKey(K id, ITransactionDAL<M>? transaccion = null);
-    Task<T?> Add(T nuevo, ITransactionDAL<M>? transaccion = null);
-    Task<bool> Save(T actualizar, ITransactionDAL<M>? transaccion = null);
-    Task<bool> Remove(K id, ITransactionDAL<M>? transaccion = null);
+    Task<List<E>> GetAll(IDALTransaction<T>? transaccion = null);
+    Task<E?> GetByKey(K id, IDALTransaction<T>? transaccion = null);
+    Task<E?> Add(E nuevo, IDALTransaction<T>? transaccion = null);
+    Task<bool> Save(E actualizar, IDALTransaction<T>? transaccion = null);
+    Task<bool> Remove(K id, IDALTransaction<T>? transaccion = null);
 }

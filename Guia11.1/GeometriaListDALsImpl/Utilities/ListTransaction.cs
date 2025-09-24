@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Ejercicio.Models;
+﻿using Ejercicio.Models;
 
 namespace GeometriaListDALsImpl.Utilities;
 

@@ -57,9 +57,9 @@ public partial class FormPrincipalView : Form
         
         if (rbtTipoRectangulo.Checked)
         {
+            figuraSelected ??= new RectanguloModel();
             RectanguloModel? r = figuraSelected as RectanguloModel;
-            r ??= new RectanguloModel();
-
+     
             double ancho = Convert.ToDouble(tbAncho.Text);
             double largo = Convert.ToDouble(tbLargo.Text);
 
@@ -68,9 +68,9 @@ public partial class FormPrincipalView : Form
         }
         else if (rbtTipoCirculo.Checked)
         {
-            CirculoModel? c = figuraSelected as CirculoModel;
             figuraSelected ??= new CirculoModel();
-
+            CirculoModel? c = figuraSelected as CirculoModel;
+            
             double radio = Convert.ToDouble(tbRadio.Text);
             c.Radio = radio;
         }
@@ -81,8 +81,6 @@ public partial class FormPrincipalView : Form
                 await figuraService.Actualizar(figuraSelected);
             else
                 await figuraService.CrearNuevo(figuraSelected);
-
-
         }
         else
         {
@@ -90,14 +88,8 @@ public partial class FormPrincipalView : Form
             return;
         }
 
-
-        btnLimpiar.PerformClick();
         btnActualizar.PerformClick();
-    }
-
-    private void btnVer_Click(object sender, EventArgs e)
-    {
-
+        btnLimpiar.PerformClick();
     }
 
     #region lvw redibujado
@@ -173,19 +165,21 @@ public partial class FormPrincipalView : Form
 
     private void btnLimpiar_Click(object sender, EventArgs e)
     {
-        #region clear del area de edición
         figuraSelected = null;
-        tbAncho.Enabled = true;
-        tbLargo.Enabled = true;
-        tbRadio.Enabled = true;
+
         tbAncho.Clear();
         tbLargo.Clear();
         tbRadio.Clear();
+        tbArea.Clear();
+
         rbtTipoCirculo.Checked = false;
         rbtTipoRectangulo.Checked = false;
+
         rbtTipoCirculo.Enabled = true;
         rbtTipoRectangulo.Enabled = true;
-        #endregion
+        tbAncho.Enabled = true;
+        tbLargo.Enabled = true;
+        tbRadio.Enabled = true;
     }
 
     private void lvwFiguras_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
@@ -228,13 +222,14 @@ public partial class FormPrincipalView : Form
         }
     }
 
-    private void btnEliminar_Click(object sender, EventArgs e)
+    async private void btnEliminar_Click(object sender, EventArgs e)
     {
         if (figuraSelected is FiguraModel f)
         {
-            figuraService.Eliminar(f.Id ?? 0);
+            await figuraService.Eliminar(f.Id ?? 0);
 
             btnActualizar.PerformClick();
+            btnLimpiar.PerformClick();
         }
         else
         {

@@ -1,18 +1,20 @@
 ﻿using Ejercicio.Models;
 using FigurasModels.DALs.Utils;
-using GeometriaMSQLDALsImpl;
-using Microsoft.Data.SqlClient;
+using GeometriaModels.DALs;
 
 namespace GeometriaServices;
 
-public class FigurasService : IFigurasService
+public class FigurasService<T> : IFigurasService
 {
-    readonly private FigurasMSQLDAL _figurasDao;
-    private readonly ITransactionDAL<SqlTransaction> _transaction;
+    //readonly private FigurasMSQLDAL _figurasDao;
+    //private readonly IDALTransaction<SqlTransaction> _transaction;
 
-    public FigurasService(FigurasMSQLDAL personasDao, ITransactionDAL<SqlTransaction> transaction)
+    readonly private IFigurasDAL<T> _figurasDao;
+    private readonly IDALTransaction<T> _transaction;
+
+    public FigurasService(IFigurasDAL<T> figurasDao, IDALTransaction<T> transaction)
     {
-        _figurasDao = personasDao;
+        _figurasDao = figurasDao;
         _transaction = transaction;
     }
 
@@ -56,5 +58,4 @@ public class FigurasService : IFigurasService
             throw ex;
         }
     }
-
 }

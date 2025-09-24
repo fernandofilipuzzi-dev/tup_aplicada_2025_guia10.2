@@ -1,5 +1,8 @@
 using FigurasABM;
 using FigurasModels.DALs.Utils;
+using GeometriaListDALsImpl;
+using GeometriaListDALsImpl.Utilities;
+using GeometriaModels.DALs;
 using GeometriaMSQLDALsImpl;
 using GeometriaMSQLDALsImpl.Utilities;
 using GeometriaServices;
@@ -7,7 +10,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-#region instanciación del DI
+#region configuraciones e instanciación del DI
 var services = new ServiceCollection();
 
 var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
@@ -15,15 +18,29 @@ var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").B
 services.Configure<ConnectionStrings>(configuration.GetSection("ConnectionStrings"));
 #endregion
 
-services.AddScoped<ITransactionDAL<SqlTransaction>, MSQLTransactionDAL>();
-
-#region registro de DALs
-services.AddSingleton<FigurasMSQLDAL>();
+/*
+#region Registro de DALs y transaccion
+services.AddScoped<IDALTransaction<SqlTransaction>, MSQLDALTransaction>();
+services.AddSingleton<IFigurasDAL<SqlTransaction>, FigurasMSQLDAL>();
 #endregion
 
-#region registro de servicios
-services.AddSingleton<IFigurasService, FigurasService>();
+#region Registro de servicios
+services.AddSingleton<IFigurasService, FigurasService<SqlTransaction>>();
 #endregion
+*/
+
+/**/
+
+#region Registro de DALs y transaccion
+services.AddScoped<IDALTransaction<ListTransaction>, ListDALTransaction>();
+services.AddSingleton<IFigurasDAL<ListTransaction>, FigurasListDAL>();
+#endregion
+
+#region Registro de servicios
+services.AddSingleton<IFigurasService, FigurasService<ListTransaction>>();
+#endregion
+
+/**/
 
 #region vistas
 services.AddTransient<FormPrincipalView>();

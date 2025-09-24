@@ -1,41 +1,45 @@
-﻿using FigurasModels.DALs.Utils;
-using GeometriaListDALsImpl.Utilities;
+﻿using Ejercicio.Models;
+using FigurasModels.DALs.Utils;
 
-namespace FigurasModels.DALs.MSQL.Utils;
+namespace GeometriaListDALsImpl.Utilities;
 
-public class ListTransactionDAL : ITransactionDAL<ListTransaction>
+public class ListDALTransaction : IDALTransaction<ListTransaction>
 {
     private ListTransaction? _transaccion;
 
-    public ListTransactionDAL()
+    public ListDALTransaction()
     {
     }
 
     public void Commit()
     {
         if (_transaccion == null)
-            throw new InvalidOperationException("Transaction has not been started.");
+            return;
+            //throw new InvalidOperationException("Transaction has not been started.");
         _transaccion.Commit();
     }
 
     public void Rollback()
     {
         if (_transaccion == null)
-            throw new InvalidOperationException("Transaction has not been started.");
+            return;
+            //throw new InvalidOperationException("Transaction has not been started.");
         _transaccion.Rollback();
     }
 
     public async Task CommitAsync()
     {
         if (_transaccion == null)
-            throw new InvalidOperationException("Transaction has not been started.");
+            return;
+            //throw new InvalidOperationException("Transaction has not been started.");
         await Task.Run(() => _transaccion.Commit());
     }
 
     public async Task RollbackAsync()
     {
         if (_transaccion == null)
-            throw new InvalidOperationException("Transaction has not been started.");
+            return;
+            //throw new InvalidOperationException("Transaction has not been started.");
         await Task.Run(() => _transaccion.Rollback());
     }
 
@@ -49,9 +53,10 @@ public class ListTransactionDAL : ITransactionDAL<ListTransaction>
         return _transaccion;
     }
 
+    public List<FiguraModel> _workingCopy { get; set; }
     public async Task BeginTransaction()
     {
-        _transaccion = new ListTransaction();
+        _transaccion = new ListTransaction(_workingCopy);
         await Task.CompletedTask;
     }
 }

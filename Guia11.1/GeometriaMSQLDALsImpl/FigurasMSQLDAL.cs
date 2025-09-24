@@ -1,12 +1,12 @@
 ﻿using Ejercicio.Models;
-using FigurasModels.DALs;
 using FigurasModels.DALs.Utils;
+using GeometriaModels.DALs;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
 
 namespace GeometriaMSQLDALsImpl;
 
-public class FigurasMSQLDAL : IBaseDAL<FiguraModel, int, SqlTransaction>
+public class FigurasMSQLDAL : IFigurasDAL<SqlTransaction>
 {
     private readonly string _connectionString;
 
@@ -15,7 +15,7 @@ public class FigurasMSQLDAL : IBaseDAL<FiguraModel, int, SqlTransaction>
         _connectionString = options.Value.DefaultConnection;
     }
 
-    async public Task<List<FiguraModel>> GetAll(ITransactionDAL<SqlTransaction>? transaccion = null)
+    async public Task<List<FiguraModel>> GetAll(IDALTransaction<SqlTransaction>? transaccion = null)
     {
         List<FiguraModel> figuras = new List<FiguraModel>();
 
@@ -46,9 +46,9 @@ ORDER BY f.Id
         return figuras;
     }
 
-    async public Task<FiguraModel?> GetByKey(int idFigura, ITransactionDAL<SqlTransaction>? transaccion = null)
+    async public Task<FiguraModel?> GetByKey(int idFigura, IDALTransaction<SqlTransaction>? transaccion = null)
     {
-        FiguraModel figura = null;
+        FiguraModel? figura = null;
 
         string query = @"
 SELECT TOP 1    f.Id,
@@ -61,31 +61,24 @@ FROM Figuras f
 WHERE f.Id=@Id
 ORDER BY f.Area
 ";
+        SqlConnection conn = await GetOpenedConnectionAsync(transaccion);
 
-        try
+        #region comando sql
+        using SqlCommand cmd = new SqlCommand(query, conn, transaccion?.GetInternalTransaction());
+        cmd.Parameters.AddWithValue("@Id", idFigura);
+        #endregion
+
+        using SqlDataReader dataReader = await cmd.ExecuteReaderAsync();
+
+        if (await dataReader.ReadAsync())
         {
-            SqlConnection conn = await GetOpenedConnectionAsync(transaccion);
-
-            #region comando sql
-            using SqlCommand cmd = new SqlCommand(query, conn, transaccion?.GetInternalTransaction());
-            cmd.Parameters.AddWithValue("@Id", idFigura);
-            #endregion
-
-            using SqlDataReader dataReader = await cmd.ExecuteReaderAsync();
-
-            if (await dataReader.ReadAsync())
-            {
-                figura = this.ReadAsObjeto(dataReader);
-            }
+            figura = this.ReadAsObjeto(dataReader);
         }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
+        
         return figura;
     }
 
-    async public Task<FiguraModel?> Add(FiguraModel nuevo, ITransactionDAL<SqlTransaction>? transaccion = null)
+    async public Task<FiguraModel?> Add(FiguraModel nuevo, IDALTransaction<SqlTransaction>? transaccion = null)
     {
         int tipo = 0;
         double? ancho = null;
@@ -98,41 +91,36 @@ OUTPUT INSERTED.Id
 VALUES
 (@Tipo, @Ancho, @Largo, @Radio)
 ";
-        try
+       
+        SqlConnection conn = await GetOpenedConnectionAsync(transaccion);
+
+        using SqlCommand comm = new SqlCommand(query, conn, transaccion?.GetInternalTransaction());
+
+        if (nuevo is RectanguloModel r)
         {
-            using SqlConnection conn = await GetOpenedConnectionAsync(transaccion);
-
-            using SqlCommand comm = new SqlCommand(query, conn, transaccion?.GetInternalTransaction());
-
-            if (nuevo is RectanguloModel r)
-            {
-                tipo = 1;
-                ancho = r.Ancho;
-                largo = r.Largo;
-            }
-            else if (nuevo is CirculoModel c)
-            {
-                tipo = 2;
-                radio = c.Radio;
-            }
-
-            comm.Parameters.AddWithValue("@Tipo", tipo);
-            comm.Parameters.AddWithValue("@Ancho", ancho ?? (object)DBNull.Value);
-            comm.Parameters.AddWithValue("@Largo", largo ?? (object)DBNull.Value);
-            comm.Parameters.AddWithValue("@Radio", radio ?? (object)DBNull.Value);
-
-            object idObject = await comm.ExecuteScalarAsync();
-
-            nuevo.Id = Convert.ToInt32(idObject);
+            tipo = 1;
+            ancho = r.Ancho;
+            largo = r.Largo;
         }
-        catch (Exception ex)
+        else if (nuevo is CirculoModel c)
         {
-            Console.WriteLine($"Error: {ex}");
+            tipo = 2;
+            radio = c.Radio;
         }
+
+        comm.Parameters.AddWithValue("@Tipo", tipo);
+        comm.Parameters.AddWithValue("@Ancho", ancho ?? (object)DBNull.Value);
+        comm.Parameters.AddWithValue("@Largo", largo ?? (object)DBNull.Value);
+        comm.Parameters.AddWithValue("@Radio", radio ?? (object)DBNull.Value);
+
+        object idObject = await comm.ExecuteScalarAsync();
+
+        nuevo.Id = Convert.ToInt32(idObject);
+        
         return nuevo;
     }
 
-    async public Task<bool> Save(FiguraModel entidad, ITransactionDAL<SqlTransaction>? transaccion = null)
+    async public Task<bool> Save(FiguraModel entidad, IDALTransaction<SqlTransaction>? transaccion = null)
     {
         int id = 0;
         double? area = null;
@@ -144,73 +132,57 @@ VALUES
 UPDATE Figuras SET Area=@Area, Ancho=@Ancho, Largo=@Largo, Radio=@Radio
 WHERE Id=@Id_Figura
 ";
-        try
+        var conn = await GetOpenedConnectionAsync(transaccion);
+
+        using SqlCommand comm = new SqlCommand(query, conn, transaccion?.GetInternalTransaction());
+
+        id = entidad.Id ?? 0;
+        if (entidad is RectanguloModel r)
         {
-            using SqlConnection conn = await GetOpenedConnectionAsync(transaccion);
-
-            using SqlCommand comm = new SqlCommand(query, conn, transaccion?.GetInternalTransaction());
-
-            id = entidad.Id ?? 0;
-            if (entidad is RectanguloModel r)
-            {
-                ancho = r.Ancho;
-                largo = r.Largo;
-            }
-            else if (entidad is CirculoModel c)
-            {
-                radio = c.Radio;
-            }
-            area = entidad.Area;
-
-            comm.Parameters.AddWithValue("@Id_Figura", id);
-            comm.Parameters.AddWithValue("@Area", area ?? (object)DBNull.Value);
-            comm.Parameters.AddWithValue("@Ancho", ancho ?? (object)DBNull.Value);
-            comm.Parameters.AddWithValue("@Largo", largo ?? (object)DBNull.Value);
-            comm.Parameters.AddWithValue("@Radio", radio ?? (object)DBNull.Value);
-
-            int cantidad = await comm.ExecuteNonQueryAsync();
-
-            return id > cantidad;
+            ancho = r.Ancho;
+            largo = r.Largo;
         }
-        catch (Exception ex)
+        else if (entidad is CirculoModel c)
         {
-            Console.WriteLine($"Error: {ex}");
+            radio = c.Radio;
         }
-        return false;
+        area = entidad.Area;
+
+        comm.Parameters.AddWithValue("@Id_Figura", id);
+        comm.Parameters.AddWithValue("@Area", area ?? (object)DBNull.Value);
+        comm.Parameters.AddWithValue("@Ancho", ancho ?? (object)DBNull.Value);
+        comm.Parameters.AddWithValue("@Largo", largo ?? (object)DBNull.Value);
+        comm.Parameters.AddWithValue("@Radio", radio ?? (object)DBNull.Value);
+
+        int cantidad = await comm.ExecuteNonQueryAsync();
+
+        return id > cantidad;
     }
 
-    async public Task<bool> Remove(int idFigura, ITransactionDAL<SqlTransaction>? transaccion = null)
+    async public Task<bool> Remove(int idFigura, IDALTransaction<SqlTransaction>? transaccion = null)
     {
         string query = @"
 DELETE 
 FROM Figuras 
 WHERE Id=@Id_Figura
 ";
+        
+        SqlConnection conn = await GetOpenedConnectionAsync(transaccion);
 
-        try
-        {
-            SqlConnection conn = await GetOpenedConnectionAsync(transaccion);
+        #region sqlcommand
+        using SqlCommand cmd = new SqlCommand(query, conn, transaccion?.GetInternalTransaction());
+        cmd.Parameters.AddWithValue("@Id_Figura", idFigura);
+        #endregion
 
-            #region sqlcommand
-            using SqlCommand cmd = new SqlCommand(query, conn, transaccion?.GetInternalTransaction());
-            cmd.Parameters.AddWithValue("@Id_Figura", idFigura);
-            #endregion
+        int cantidad = await cmd.ExecuteNonQueryAsync();
 
-            int cantidad = await cmd.ExecuteNonQueryAsync();
-
-            return cantidad > 0;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.ToString());
-        }
-
-        return false;
+        return cantidad > 0;        
     }
 
-    private async Task<SqlConnection> GetOpenedConnectionAsync(ITransactionDAL<SqlTransaction>? transaccion)
+    private async Task<SqlConnection> GetOpenedConnectionAsync(IDALTransaction<SqlTransaction>? transaccion)
     {
         var conexion = transaccion?.GetInternalTransaction()?.Connection ?? new SqlConnection(_connectionString);
+
         if (conexion.State == System.Data.ConnectionState.Closed)
         {
             await conexion.OpenAsync();

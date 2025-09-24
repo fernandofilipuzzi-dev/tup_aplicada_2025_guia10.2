@@ -1,6 +1,6 @@
 ﻿namespace FigurasModels.DALs.Utils;
 
-public interface ITransactionDAL<T> : IDisposable
+public interface IDALTransaction<T> : IDisposable
 {
     void Commit();
     void Rollback();
