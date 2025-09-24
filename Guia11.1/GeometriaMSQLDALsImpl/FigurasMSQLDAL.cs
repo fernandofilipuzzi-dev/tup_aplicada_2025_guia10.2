@@ -51,14 +51,12 @@ ORDER BY f.Id
         FiguraModel figura = null;
 
         string query = @"
-SELECT TOP 1 f.Id,
-	   CASE WHEN f.Tipo=1 THEN 'Rectangulo'
-			WHEN f.Tipo=2 THEN 'Circulo'
-	   ELSE 'Desconocido' END AS Tipo,
-	   f.Area,
-	   f.Ancho,
-	   f.Largo,
-	   f.Radio
+SELECT TOP 1    f.Id,
+	           f.Tipo AS Tipo,
+	           f.Area,
+	           f.Ancho,
+	           f.Largo,
+	           f.Radio
 FROM Figuras f
 WHERE f.Id=@Id
 ORDER BY f.Area
@@ -66,14 +64,14 @@ ORDER BY f.Area
 
         try
         {
-            using SqlConnection conn = await GetOpenedConnectionAsync(transaccion);
+            SqlConnection conn = await GetOpenedConnectionAsync(transaccion);
 
             #region comando sql
             using SqlCommand cmd = new SqlCommand(query, conn, transaccion?.GetInternalTransaction());
             cmd.Parameters.AddWithValue("@Id", idFigura);
             #endregion
 
-            SqlDataReader dataReader = await cmd.ExecuteReaderAsync();
+            using SqlDataReader dataReader = await cmd.ExecuteReaderAsync();
 
             if (await dataReader.ReadAsync())
             {
@@ -119,9 +117,9 @@ VALUES
             }
 
             comm.Parameters.AddWithValue("@Tipo", tipo);
-            comm.Parameters.AddWithValue("@Ancho", ancho);
-            comm.Parameters.AddWithValue("@Largo", largo);
-            comm.Parameters.AddWithValue("@Radio", radio = 0.0);
+            comm.Parameters.AddWithValue("@Ancho", ancho ?? (object)DBNull.Value);
+            comm.Parameters.AddWithValue("@Largo", largo ?? (object)DBNull.Value);
+            comm.Parameters.AddWithValue("@Radio", radio ?? (object)DBNull.Value);
 
             object idObject = await comm.ExecuteScalarAsync();
 
@@ -165,10 +163,10 @@ WHERE Id=@Id_Figura
             area = entidad.Area;
 
             comm.Parameters.AddWithValue("@Id_Figura", id);
-            comm.Parameters.AddWithValue("@Area", area);
-            comm.Parameters.AddWithValue("@Ancho", ancho);
-            comm.Parameters.AddWithValue("@Largo", largo);
-            comm.Parameters.AddWithValue("@Radio", radio = 0.0);
+            comm.Parameters.AddWithValue("@Area", area ?? (object)DBNull.Value);
+            comm.Parameters.AddWithValue("@Ancho", ancho ?? (object)DBNull.Value);
+            comm.Parameters.AddWithValue("@Largo", largo ?? (object)DBNull.Value);
+            comm.Parameters.AddWithValue("@Radio", radio ?? (object)DBNull.Value);
 
             int cantidad = await comm.ExecuteNonQueryAsync();
 
@@ -191,7 +189,7 @@ WHERE Id=@Id_Figura
 
         try
         {
-            using SqlConnection conn = await GetOpenedConnectionAsync(transaccion);
+            SqlConnection conn = await GetOpenedConnectionAsync(transaccion);
 
             #region sqlcommand
             using SqlCommand cmd = new SqlCommand(query, conn, transaccion?.GetInternalTransaction());
@@ -238,7 +236,7 @@ WHERE Id=@Id_Figura
         }
         else if (tipo == 2)
         {
-            entidad = new CirculoModel() { Id = id, Area = area, Radio = largo };
+            entidad = new CirculoModel() { Id = id, Area = area, Radio = radio };
         }
         return entidad;
     }

@@ -8,11 +8,11 @@ public partial class FormPrincipalView : Form
 {
     IFigurasService figuraService;
 
-    FiguraModel figuraSelected;
+    FiguraModel? figuraSelected;
 
     public FormPrincipalView(IFigurasService figuraService)
     {
-        this.figuraService= figuraService;
+        this.figuraService = figuraService;
 
         InitializeComponent();
     }
@@ -21,7 +21,7 @@ public partial class FormPrincipalView : Form
     {
         lvwInicializar();
     }
-    
+
     async private void btnActualizar_Click(object sender, EventArgs e)
     {
         List<FiguraModel> figuras = await figuraService.GetAll();
@@ -51,13 +51,14 @@ public partial class FormPrincipalView : Form
             }
         }
     }
-       
+
     async private void btnAgregar_Click(object sender, EventArgs e)
     {
         
         if (rbtTipoRectangulo.Checked)
         {
-            RectanguloModel r = figuraSelected==null? new RectanguloModel(): figuraSelected as RectanguloModel;
+            RectanguloModel? r = figuraSelected as RectanguloModel;
+            r ??= new RectanguloModel();
 
             double ancho = Convert.ToDouble(tbAncho.Text);
             double largo = Convert.ToDouble(tbLargo.Text);
@@ -67,7 +68,8 @@ public partial class FormPrincipalView : Form
         }
         else if (rbtTipoCirculo.Checked)
         {
-            CirculoModel c = figuraSelected == null ? new CirculoModel() : figuraSelected as CirculoModel;
+            CirculoModel? c = figuraSelected as CirculoModel;
+            figuraSelected ??= new CirculoModel();
 
             double radio = Convert.ToDouble(tbRadio.Text);
             c.Radio = radio;
@@ -79,6 +81,8 @@ public partial class FormPrincipalView : Form
                 await figuraService.Actualizar(figuraSelected);
             else
                 await figuraService.CrearNuevo(figuraSelected);
+
+
         }
         else
         {
@@ -86,59 +90,14 @@ public partial class FormPrincipalView : Form
             return;
         }
 
-            #region clear del area de edición
-            tbAncho.Enabled = true;
-        tbLargo.Enabled = true;
-        tbRadio.Enabled = true;
-        tbAncho.Clear();
-        tbLargo.Clear();
-        tbRadio.Clear();
-        rbtTipoCirculo.Checked = false;
-        rbtTipoRectangulo.Checked = false;
-        rbtTipoCirculo.Enabled = true;
-        rbtTipoRectangulo.Enabled = true;
-        #endregion
+
+        btnLimpiar.PerformClick();
+        btnActualizar.PerformClick();
     }
 
     private void btnVer_Click(object sender, EventArgs e)
     {
-        if (lvwFiguras.SelectedItems.Count > 0)
-        {
-            figuraSelected = lvwFiguras.SelectedItems[0].Tag as FiguraModel;
 
-            if (figuraSelected != null)
-            {
-                tbAncho.Clear();
-                tbLargo.Clear();
-                tbRadio.Clear();
-                rbtTipoRectangulo.Enabled = false;
-                rbtTipoCirculo.Enabled = false;
-
-                if (figuraSelected is RectanguloModel r)
-                {
-                    rbtTipoRectangulo.Checked = true;
-                    tbAncho.Text = r.Ancho.ToString();
-                    tbLargo.Text = r.Largo.ToString();
-
-                    tbAncho.Enabled = true;
-                    tbLargo.Enabled = true;
-                    tbRadio.Enabled = false;
-                }
-                else if (figuraSelected is CirculoModel c)
-                {
-                    rbtTipoCirculo.Checked = true;
-                    tbRadio.Text = c.Radio.ToString();
-
-                    tbAncho.Enabled = false;
-                    tbLargo.Enabled = false;
-                    tbRadio.Enabled = true;
-                }
-            }
-        }
-        else
-        {
-            MessageBox.Show("No hay ningún elemento seleccionado");
-        }
     }
 
     #region lvw redibujado
@@ -207,8 +166,99 @@ public partial class FormPrincipalView : Form
     }
     private void lvwFiguras_SelectedIndexChanged(object sender, EventArgs e)
     {
-        lvwFiguras.Invalidate(); 
+        lvwFiguras.Invalidate();
     }
 
     #endregion
+
+    private void btnLimpiar_Click(object sender, EventArgs e)
+    {
+        #region clear del area de edición
+        figuraSelected = null;
+        tbAncho.Enabled = true;
+        tbLargo.Enabled = true;
+        tbRadio.Enabled = true;
+        tbAncho.Clear();
+        tbLargo.Clear();
+        tbRadio.Clear();
+        rbtTipoCirculo.Checked = false;
+        rbtTipoRectangulo.Checked = false;
+        rbtTipoCirculo.Enabled = true;
+        rbtTipoRectangulo.Enabled = true;
+        #endregion
+    }
+
+    private void lvwFiguras_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+    {
+
+        if (e.IsSelected)
+        {
+            figuraSelected = e.Item.Tag as FiguraModel;
+
+            if (figuraSelected != null)
+            {
+                tbAncho.Clear();
+                tbLargo.Clear();
+                tbRadio.Clear();
+                rbtTipoRectangulo.Enabled = false;
+                rbtTipoCirculo.Enabled = false;
+
+                tbArea.Text = $"{figuraSelected.Area:F2}";
+
+                if (figuraSelected is RectanguloModel r)
+                {
+                    rbtTipoRectangulo.Checked = true;
+                    tbAncho.Text = $"{r.Ancho:F2}";
+                    tbLargo.Text = $"{r.Largo:F2}";
+
+                    tbAncho.Enabled = true;
+                    tbLargo.Enabled = true;
+                    tbRadio.Enabled = false;
+                }
+                else if (figuraSelected is CirculoModel c)
+                {
+                    rbtTipoCirculo.Checked = true;
+                    tbRadio.Text = $"{c.Radio:F2}";
+
+                    tbAncho.Enabled = false;
+                    tbLargo.Enabled = false;
+                    tbRadio.Enabled = true;
+                }
+            }
+        }
+    }
+
+    private void btnEliminar_Click(object sender, EventArgs e)
+    {
+        if (figuraSelected is FiguraModel f)
+        {
+            figuraService.Eliminar(f.Id ?? 0);
+
+            btnActualizar.PerformClick();
+        }
+        else
+        {
+            MessageBox.Show("Debe seleccionar una figura para eliminar");
+            return;
+        }
+    }
+
+    private void rbtTipoRectangulo_CheckedChanged(object sender, EventArgs e)
+    {
+        if (sender == rbtTipoRectangulo)
+        { 
+            tbAncho.Enabled = rbtTipoRectangulo.Checked;
+            tbLargo.Enabled = rbtTipoRectangulo.Checked;
+            tbRadio.Enabled = !rbtTipoRectangulo.Checked;
+            tbRadio.Clear();
+        }
+        else if(sender == rbtTipoCirculo)
+        {
+            tbAncho.Clear();
+            tbLargo.Clear();
+            tbAncho.Enabled = !rbtTipoCirculo.Checked;
+            tbLargo.Enabled = !rbtTipoCirculo.Checked;
+            tbRadio.Enabled = rbtTipoCirculo.Checked;
+        }
+    }
 }

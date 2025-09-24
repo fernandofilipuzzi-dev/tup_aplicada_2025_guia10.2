@@ -1,58 +1,78 @@
 ﻿using Ejercicio.Models;
 using FigurasModels.DALs;
-using FigurasModels.DALs.MSQL.Utils;
 using FigurasModels.DALs.Utils;
+using GeometriaListDALsImpl.Utilities;
 
 namespace GeometriaListDALsImpl;
 
-public class FigurasListDAL : IBaseDAL<FiguraModel, int, ListTransactionDAL>
+public class FigurasListDAL : IBaseDAL<FiguraModel, int, ListTransaction>
 {
-    int id = 1;
-    List<FiguraModel> figuras = new List<FiguraModel>();
- 
-    async public Task<List<FiguraModel>> GetAll(ITransactionDAL<ListTransactionDAL>? transaccion = null)
+    private int _id = 1;
+    private readonly List<FiguraModel> _figuras = new List<FiguraModel>();
+
+    public async Task<List<FiguraModel>> GetAll(ITransactionDAL<ListTransaction>? transaccion = null)
     {
-        return await Task.FromResult(figuras);
+        if (transaccion?.GetInternalTransaction() is ListTransaction trans)
+        {
+            return await Task.FromResult(trans.GetWorkingCopy());
+        }
+        return await Task.FromResult(_figuras);
     }
 
-    async public Task<FiguraModel?> GetByKey(int idFigura, ITransactionDAL<ListTransactionDAL>? transaccion = null)
+    public async Task<FiguraModel?> GetByKey(int idFigura, ITransactionDAL<ListTransaction>? transaccion = null)
     {
-        FiguraModel figura = (from f in figuras where f.Id == idFigura select f).FirstOrDefault();
+        var lista = transaccion?.GetInternalTransaction() is ListTransaction trans
+            ? trans.GetWorkingCopy()
+            : _figuras;
+
+        var figura = lista.FirstOrDefault(f => f.Id == idFigura);
         return await Task.FromResult(figura);
     }
 
-    async public Task<FiguraModel?> Add(FiguraModel nuevo, ITransactionDAL<ListTransactionDAL>? transaccion = null)
+    public async Task<FiguraModel?> Add(FiguraModel nuevo, ITransactionDAL<ListTransaction>? transaccion = null)
     {
-        FiguraModel f = await GetByKey(nuevo.Id ?? 0);
+        var lista = transaccion?.GetInternalTransaction() is ListTransaction trans
+            ? trans.GetWorkingCopy()
+            : _figuras;
+
+        var f = lista.FirstOrDefault(f => f.Id == nuevo.Id);
 
         if (f == null)
         {
-            figuras.Add(nuevo);
-            nuevo.Id = id++;
+            nuevo.Id = _id++;
+            lista.Add(nuevo);
             return nuevo;
         }
         return null;
     }
 
-    async public Task<bool> Save(FiguraModel entidad, ITransactionDAL<ListTransactionDAL>? transaccion = null)
+    public async Task<bool> Save(FiguraModel entidad, ITransactionDAL<ListTransaction>? transaccion = null)
     {
-        FiguraModel f = await GetByKey(entidad.Id ?? 0);
+        var lista = transaccion?.GetInternalTransaction() is ListTransaction trans
+            ? trans.GetWorkingCopy()
+            : _figuras;
+
+        var f = lista.FirstOrDefault(f => f.Id == entidad.Id);
 
         if (f == null)
         {
-            figuras.Add(entidad);
+            lista.Add(entidad);
             return true;
         }
         return false;
     }
 
-    async public Task<bool> Remove(int idEntidad, ITransactionDAL<ListTransactionDAL>? transaccion = null)
+    public async Task<bool> Remove(int idEntidad, ITransactionDAL<ListTransaction>? transaccion = null)
     {
-        FiguraModel f = await GetByKey(idEntidad);
+        var lista = transaccion?.GetInternalTransaction() is ListTransaction trans
+            ? trans.GetWorkingCopy()
+            : _figuras;
+
+        var f = lista.FirstOrDefault(f => f.Id == idEntidad);
 
         if (f != null)
         {
-            figuras.Remove(f);
+            lista.Remove(f);
             return true;
         }
 
