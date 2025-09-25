@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GeometriaListDALsImpl\GeometriaListDALsImpl.csproj" />
+    <ProjectReference Include="..\GeometriaModels\GeometriaModels.csproj" />
     <ProjectReference Include="..\GeometriaServices\GeometriaServices.csproj" />
   </ItemGroup>
 
