@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GeometriaListDALsImpl\GeometriaListDALsImpl.csproj" />
+    <ProjectReference Include="..\GeometriaModels\GeometriaModels.csproj" />
+    <ProjectReference Include="..\GeometriaMSQLDALsImpl\GeometriaMSQLDALsImpl.csproj" />
+    <ProjectReference Include="..\GeometriaServices\GeometriaServices.csproj" />
+  </ItemGroup>
+
+</Project>

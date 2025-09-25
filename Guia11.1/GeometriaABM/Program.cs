@@ -1,4 +1,5 @@
 using FigurasABM;
+
 using GeometriaListDALsImpl;
 using GeometriaListDALsImpl.Utilities;
 using GeometriaModels.DALs;
@@ -9,47 +10,44 @@ using GeometriaServices;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
-#region configuraciones e instanciación del DI
-var services = new ServiceCollection();
+//host es el contenedor principal de la aplicación.
+var host = Host.CreateDefaultBuilder()
+.ConfigureServices((context, services) =>
+{
+    IConfiguration configuration = context.Configuration;
+    services.Configure<ConnectionStrings>(configuration.GetSection("ConnectionStrings"));
 
-var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-//usa el patron options - con Microsoft.Extensions.Options y  Microsoft.Extensions.Options.ConfigurationExtensions;
-services.Configure<ConnectionStrings>(configuration.GetSection("ConnectionStrings"));
-#endregion
+    /**/
+    #region Registro de DALs y transaccion
+    services.AddScoped<IDALTransaction<SqlTransaction>, MSQLDALTransaction>();
+    services.AddSingleton<IFigurasDAL<SqlTransaction>, FigurasMSQLDAL>();
+    #endregion
+
+    #region Registro de services.
+    services.AddSingleton<IFigurasService, FigurasService<SqlTransaction>>();
+    #endregion
+
+    /**/
+    /*
+    #region Registro de DALs y transaccion
+    services.AddScoped<IDALTransaction<ListTransaction>, ListDALTransaction>();
+    services.AddSingleton<IFigurasDAL<ListTransaction>, FigurasListDAL>();
+    #endregion
+
+    #region Registro de servicios
+    services.AddSingleton<IFigurasService, FigurasService<ListTransaction>>();
+    #endregion
+    */
 
 
-#region Registro de DALs y transaccion
-services.AddScoped<IDALTransaction<SqlTransaction>, MSQLDALTransaction>();
-services.AddSingleton<IFigurasDAL<SqlTransaction>, FigurasMSQLDAL>();
-#endregion
+    services.AddTransient<FormPrincipalView>();
+})
+.Build();
 
-#region Registro de servicios
-services.AddSingleton<IFigurasService, FigurasService<SqlTransaction>>();
-#endregion
-
-
-/**/
-/*
-#region Registro de DALs y transaccion
-services.AddScoped<IDALTransaction<ListTransaction>, ListDALTransaction>();
-services.AddSingleton<IFigurasDAL<ListTransaction>, FigurasListDAL>();
-#endregion
-
-#region Registro de servicios
-services.AddSingleton<IFigurasService, FigurasService<ListTransaction>>();
-#endregion
-*/
-/**/
-
-#region vistas
-services.AddTransient<FormPrincipalView>();
-#endregion
-
-//
-var serviceProvider = services.BuildServiceProvider();
-
-// ejecución de la aplicación
 ApplicationConfiguration.Initialize();
-var form = serviceProvider.GetRequiredService<FormPrincipalView>();
+var form = host.Services.GetRequiredService<FormPrincipalView>();
 Application.Run(form);
+
+
