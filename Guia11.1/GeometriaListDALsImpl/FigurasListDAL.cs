@@ -14,16 +14,24 @@ public class FigurasListDAL : IFigurasDAL<ListTransaction>
     {
         if (transaccion?.GetInternalTransaction() is ListTransaction trans)
         {
-            return await Task.FromResult(trans.GetWorkingCopy());
+            var lista=from copy in trans.GetWorkingCopy() where copy is FiguraModel select (FiguraModel)copy;
+            return await Task.FromResult(lista.ToList());
         }
         return await Task.FromResult(_figuras);
     }
 
     public async Task<FiguraModel?> GetByKey(int idFigura, IDALTransaction<ListTransaction>? transaccion = null)
     {
-        var lista = transaccion?.GetInternalTransaction() is ListTransaction trans
-            ? trans.GetWorkingCopy()
-            : _figuras;
+        List<FiguraModel> lista = new List<FiguraModel>();
+        if (transaccion?.GetInternalTransaction() is ListTransaction trans)
+        {
+            var list = from copy in trans.GetWorkingCopy() where copy is FiguraModel select (FiguraModel)copy;
+            lista = list.ToList();
+        }
+        else
+        {
+            lista = _figuras;
+        }
 
         var figura = lista.FirstOrDefault(f => f.Id == idFigura);
         return await Task.FromResult(figura);
@@ -31,9 +39,16 @@ public class FigurasListDAL : IFigurasDAL<ListTransaction>
 
     public async Task<FiguraModel?> Add(FiguraModel nuevo, IDALTransaction<ListTransaction>? transaccion = null)
     {
-        var lista = transaccion?.GetInternalTransaction() is ListTransaction trans
-            ? trans.GetWorkingCopy()
-            : _figuras;
+        List<FiguraModel> lista = new List<FiguraModel>();
+        if (transaccion?.GetInternalTransaction() is ListTransaction trans)
+        {
+            var list = from copy in trans.GetWorkingCopy() where copy is FiguraModel select (FiguraModel)copy;
+            lista = list.ToList();
+        }
+        else
+        {
+            lista = _figuras;
+        }
 
         var f = lista.FirstOrDefault(f => f.Id == nuevo.Id);
 
@@ -48,9 +63,16 @@ public class FigurasListDAL : IFigurasDAL<ListTransaction>
 
     public async Task<bool> Save(FiguraModel entidad, IDALTransaction<ListTransaction>? transaccion = null)
     {
-        var lista = transaccion?.GetInternalTransaction() is ListTransaction trans
-            ? trans.GetWorkingCopy()
-            : _figuras;
+        List<FiguraModel> lista = new List<FiguraModel>();
+        if (transaccion?.GetInternalTransaction() is ListTransaction trans)
+        {
+            var list = from copy in trans.GetWorkingCopy() where copy is FiguraModel select (FiguraModel)copy;
+            lista = list.ToList();
+        }
+        else
+        {
+            lista = _figuras;
+        }
 
         var f = lista.FirstOrDefault(f => f.Id == entidad.Id);
 
@@ -64,9 +86,16 @@ public class FigurasListDAL : IFigurasDAL<ListTransaction>
 
     public async Task<bool> Remove(int idEntidad, IDALTransaction<ListTransaction>? transaccion = null)
     {
-        var lista = transaccion?.GetInternalTransaction() is ListTransaction trans
-            ? trans.GetWorkingCopy()
-            : _figuras;
+        List<FiguraModel> lista=new List<FiguraModel>();
+        if (transaccion?.GetInternalTransaction() is ListTransaction trans)
+        {
+            var list = from copy in trans.GetWorkingCopy() where copy is FiguraModel select (FiguraModel)copy;
+            lista= list.ToList();
+        }
+        else
+        {
+            lista = _figuras;
+        }
 
         var f = lista.FirstOrDefault(f => f.Id == idEntidad);
 

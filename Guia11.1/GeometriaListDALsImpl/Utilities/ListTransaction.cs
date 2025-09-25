@@ -6,20 +6,20 @@ public class ListTransaction
 {
     private bool _isCommitted;
     private bool _isRolledBack;
-    private readonly List<FiguraModel> _originalList;
-    private List<FiguraModel> _workingCopy;
+    private readonly List<object> _originalList;
+    private List<object> _workingCopy;
 
-    public ListTransaction(List<FiguraModel> figuras)
+    public ListTransaction(List<object> figuras)
     {
         _isCommitted = false;
         _isRolledBack = false;
         _originalList = figuras;
-        _workingCopy = new List<FiguraModel>(_originalList);
+        _workingCopy = new List<object>(_originalList);
     }
 
-    internal List<FiguraModel> GetWorkingCopy() => _workingCopy;
+    public List<object> GetWorkingCopy() => _workingCopy;
 
-    internal void Commit()
+    public void Commit()
     {
         if (_isRolledBack)
             throw new InvalidOperationException("Transaction has been rolled back.");
@@ -31,14 +31,14 @@ public class ListTransaction
         _isCommitted = true;
     }
 
-    internal void Rollback()
+    public void Rollback()
     {
         if (_isCommitted)
             throw new InvalidOperationException("Transaction has already been committed.");
         if (_isRolledBack)
             throw new InvalidOperationException("Transaction has already been rolled back.");
 
-        _workingCopy = new List<FiguraModel>(_originalList);
+        _workingCopy = new List<object>(_originalList);
         _isRolledBack = true;
     }
 

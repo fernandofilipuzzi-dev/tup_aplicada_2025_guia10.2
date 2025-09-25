@@ -15,7 +15,6 @@ public class ListDALTransaction : IDALTransaction<ListTransaction>
     {
         if (_transaccion == null)
             return;
-            //throw new InvalidOperationException("Transaction has not been started.");
         _transaccion.Commit();
     }
 
@@ -23,7 +22,6 @@ public class ListDALTransaction : IDALTransaction<ListTransaction>
     {
         if (_transaccion == null)
             return;
-            //throw new InvalidOperationException("Transaction has not been started.");
         _transaccion.Rollback();
     }
 
@@ -31,7 +29,6 @@ public class ListDALTransaction : IDALTransaction<ListTransaction>
     {
         if (_transaccion == null)
             return;
-            //throw new InvalidOperationException("Transaction has not been started.");
         await Task.Run(() => _transaccion.Commit());
     }
 
@@ -39,7 +36,6 @@ public class ListDALTransaction : IDALTransaction<ListTransaction>
     {
         if (_transaccion == null)
             return;
-            //throw new InvalidOperationException("Transaction has not been started.");
         await Task.Run(() => _transaccion.Rollback());
     }
 
@@ -53,7 +49,7 @@ public class ListDALTransaction : IDALTransaction<ListTransaction>
         return _transaccion;
     }
 
-    public List<FiguraModel> _workingCopy { get; set; }
+    public List<object> _workingCopy { get; set; }
     public async Task BeginTransaction()
     {
         _transaccion = new ListTransaction(_workingCopy);

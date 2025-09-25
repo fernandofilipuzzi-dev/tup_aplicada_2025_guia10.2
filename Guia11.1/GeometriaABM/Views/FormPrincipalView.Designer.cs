@@ -53,7 +53,7 @@ partial class FormPrincipalView
         // 
         // btnActualizar
         // 
-        btnActualizar.Location = new Point(442, 63);
+        btnActualizar.Location = new Point(442, 34);
         btnActualizar.Margin = new Padding(4);
         btnActualizar.Name = "btnActualizar";
         btnActualizar.Size = new Size(106, 60);
@@ -64,9 +64,9 @@ partial class FormPrincipalView
         // 
         // lvwFiguras
         // 
-        lvwFiguras.Location = new Point(6, 34);
+        lvwFiguras.Location = new Point(6, 28);
         lvwFiguras.Name = "lvwFiguras";
-        lvwFiguras.Size = new Size(429, 255);
+        lvwFiguras.Size = new Size(429, 310);
         lvwFiguras.TabIndex = 2;
         lvwFiguras.UseCompatibleStateImageBehavior = false;
         lvwFiguras.ItemSelectionChanged += lvwFiguras_ItemSelectionChanged;
@@ -214,7 +214,7 @@ partial class FormPrincipalView
         // 
         // btnEliminar
         // 
-        btnEliminar.Location = new Point(442, 131);
+        btnEliminar.Location = new Point(442, 102);
         btnEliminar.Margin = new Padding(4);
         btnEliminar.Name = "btnEliminar";
         btnEliminar.Size = new Size(106, 63);
@@ -230,7 +230,7 @@ partial class FormPrincipalView
         groupBox2.Controls.Add(btnActualizar);
         groupBox2.Location = new Point(6, 217);
         groupBox2.Name = "groupBox2";
-        groupBox2.Size = new Size(565, 295);
+        groupBox2.Size = new Size(565, 348);
         groupBox2.TabIndex = 7;
         groupBox2.TabStop = false;
         groupBox2.Text = "Listado de Figuras";
@@ -239,7 +239,7 @@ partial class FormPrincipalView
         // 
         AutoScaleDimensions = new SizeF(9F, 21F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(576, 515);
+        ClientSize = new Size(576, 567);
         Controls.Add(groupBox2);
         Controls.Add(groupBox1);
         Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);

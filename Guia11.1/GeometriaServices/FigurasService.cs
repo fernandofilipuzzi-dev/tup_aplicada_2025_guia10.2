@@ -55,7 +55,7 @@ public class FigurasService<T> : IFigurasService
         catch (Exception ex)
         {
             await _transaction.RollbackAsync();
-            throw ex;
+            //throw ex;
         }
     }
 }
