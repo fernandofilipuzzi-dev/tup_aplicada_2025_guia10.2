@@ -1,5 +1,5 @@
-﻿using Ejercicio.Models;
-using FigurasModels.DALs.Utils;
+﻿
+using GeometriaModels.DALs.Utilities;
 
 namespace GeometriaListDALsImpl.Utilities;
 

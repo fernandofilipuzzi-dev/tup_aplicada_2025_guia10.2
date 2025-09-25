@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{02EA681E-C
 	ProjectSection(SolutionItems) = preProject
 		Docs\Diagrama_de_clases.uml = Docs\Diagrama_de_clases.uml
 		Docs\diagrama_de_clases_principal.jpg = Docs\diagrama_de_clases_principal.jpg
-		Docs\Main.jpg = Docs\Main.jpg
+		Docs\estructura_solucion.jpg = Docs\estructura_solucion.jpg
 		Docs\Readme.md = Docs\Readme.md
 	EndProjectSection
 EndProject
@@ -23,13 +23,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometriaMSQLDALsImpl", "Ge
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometriaListDALsImpl", "GeometriaListDALsImpl\GeometriaListDALsImpl.csproj", "{6CAF4B12-BED8-4C4C-9CF3-6CD543C3CAE2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Implementaciones", "Implementaciones", "{BD53C87D-BA6F-4307-9782-7EB9A6AF6062}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Implementacion en memoria", "Implementacion en memoria", "{BD53C87D-BA6F-4307-9782-7EB9A6AF6062}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL-Server", "SQL-Server", "{2A5F364F-739E-4D80-9A8A-6EEA415F33F2}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Implementacion sql-server", "Implementacion sql-server", "{2A5F364F-739E-4D80-9A8A-6EEA415F33F2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListDaoEjemplo", "ListDaoEjemplo\ListDaoEjemplo.csproj", "{B59955F8-7295-4E39-BDE4-94C69DDF99D6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ejemplos", "Ejemplos", "{506D5A6B-CE45-4A18-98C2-19822FF118EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSQLDaoEjemplo", "MSQLDaoEjemplo\MSQLDaoEjemplo.csproj", "{20AB4694-5D1D-4AA9-B9BD-E0620FD413C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,15 +69,20 @@ Global
 		{B59955F8-7295-4E39-BDE4-94C69DDF99D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B59955F8-7295-4E39-BDE4-94C69DDF99D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B59955F8-7295-4E39-BDE4-94C69DDF99D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20AB4694-5D1D-4AA9-B9BD-E0620FD413C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20AB4694-5D1D-4AA9-B9BD-E0620FD413C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20AB4694-5D1D-4AA9-B9BD-E0620FD413C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20AB4694-5D1D-4AA9-B9BD-E0620FD413C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{278652C6-2AE1-480C-AE14-35C001976371} = {2A5F364F-739E-4D80-9A8A-6EEA415F33F2}
-		{08B5E676-1A18-44F8-A6CA-CA3F81DEC511} = {BD53C87D-BA6F-4307-9782-7EB9A6AF6062}
+		{08B5E676-1A18-44F8-A6CA-CA3F81DEC511} = {2A5F364F-739E-4D80-9A8A-6EEA415F33F2}
 		{6CAF4B12-BED8-4C4C-9CF3-6CD543C3CAE2} = {BD53C87D-BA6F-4307-9782-7EB9A6AF6062}
 		{B59955F8-7295-4E39-BDE4-94C69DDF99D6} = {506D5A6B-CE45-4A18-98C2-19822FF118EA}
+		{20AB4694-5D1D-4AA9-B9BD-E0620FD413C9} = {506D5A6B-CE45-4A18-98C2-19822FF118EA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B052E6BC-A8B2-40DC-B647-C11C57A27E5B}

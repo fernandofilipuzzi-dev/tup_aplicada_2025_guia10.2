@@ -3,13 +3,14 @@ USE master;
 
 GO
 
-USE GUIA6_1_Ejercicio1_DB;
+USE Guia11_1_GeometriaDataBase_DB;
+
 
 GO
 
 -- a- Cree un sp llamado sp_CalcularAreas que calcule el área de todas las entidades.
 
-CREATE OR ALTER PROCEDURE sp_CalcularAreas
+CREATE PROCEDURE sp_CalcularAreas
 AS
 BEGIN
 	DECLARE Figura_CURSOR CURSOR FOR 
@@ -68,5 +69,5 @@ SELECT f.Id,
 FROM Figuras f
 
 
---USE master
+USE master
 

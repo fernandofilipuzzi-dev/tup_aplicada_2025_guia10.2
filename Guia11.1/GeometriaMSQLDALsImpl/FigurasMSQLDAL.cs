@@ -1,6 +1,6 @@
-﻿using Ejercicio.Models;
-using FigurasModels.DALs.Utils;
+﻿using GeometriaModels;
 using GeometriaModels.DALs;
+using GeometriaModels.DALs.Utilities;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
 
@@ -10,6 +10,10 @@ public class FigurasMSQLDAL : IFigurasDAL<SqlTransaction>
 {
     private readonly string _connectionString;
 
+    public FigurasMSQLDAL(string connectionStrings)
+    {
+        _connectionString = connectionStrings;
+    }
     public FigurasMSQLDAL(IOptions<ConnectionStrings> options)
     {
         _connectionString = options.Value.DefaultConnection;
@@ -134,7 +138,7 @@ WHERE Id=@Id_Figura
 ";
         var conn = await GetOpenedConnectionAsync(transaccion);
 
-        using SqlCommand comm = new SqlCommand(query, conn, transaccion?.GetInternalTransaction());
+        using SqlCommand cmd = new SqlCommand(query, conn, transaccion?.GetInternalTransaction());
 
         id = entidad.Id ?? 0;
         if (entidad is RectanguloModel r)
@@ -148,13 +152,13 @@ WHERE Id=@Id_Figura
         }
         area = entidad.Area;
 
-        comm.Parameters.AddWithValue("@Id_Figura", id);
-        comm.Parameters.AddWithValue("@Area", area ?? (object)DBNull.Value);
-        comm.Parameters.AddWithValue("@Ancho", ancho ?? (object)DBNull.Value);
-        comm.Parameters.AddWithValue("@Largo", largo ?? (object)DBNull.Value);
-        comm.Parameters.AddWithValue("@Radio", radio ?? (object)DBNull.Value);
+        cmd.Parameters.AddWithValue("@Id_Figura", id);
+        cmd.Parameters.AddWithValue("@Area", area ?? (object)DBNull.Value);
+        cmd.Parameters.AddWithValue("@Ancho", ancho ?? (object)DBNull.Value);
+        cmd.Parameters.AddWithValue("@Largo", largo ?? (object)DBNull.Value);
+        cmd.Parameters.AddWithValue("@Radio", radio ?? (object)DBNull.Value);
 
-        int cantidad = await comm.ExecuteNonQueryAsync();
+        int cantidad = await cmd.ExecuteNonQueryAsync();
 
         return id > cantidad;
     }
@@ -190,6 +194,18 @@ WHERE Id=@Id_Figura
         return conexion;
     }
 
+    async public Task ProcesarFiguras(IDALTransaction<SqlTransaction>? transaccion = null)
+    {
+        string query = "sp_CalcularAreas";
+        var conn = await GetOpenedConnectionAsync(transaccion);
+
+        using SqlCommand cmd = new SqlCommand(query, conn, transaccion?.GetInternalTransaction());
+        cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+        _ = await cmd.ExecuteNonQueryAsync();
+
+    }
+
     private FiguraModel ReadAsObjeto(SqlDataReader dataReader)
     {
         #region parseo
@@ -212,4 +228,5 @@ WHERE Id=@Id_Figura
         }
         return entidad;
     }
+
 }

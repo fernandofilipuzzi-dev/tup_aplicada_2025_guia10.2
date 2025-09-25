@@ -46,6 +46,7 @@ partial class FormPrincipalView
         tbAncho = new TextBox();
         btnEliminar = new Button();
         groupBox2 = new GroupBox();
+        btnProcesar = new Button();
         groupBox1.SuspendLayout();
         groupBox3.SuspendLayout();
         groupBox2.SuspendLayout();
@@ -225,6 +226,7 @@ partial class FormPrincipalView
         // 
         // groupBox2
         // 
+        groupBox2.Controls.Add(btnProcesar);
         groupBox2.Controls.Add(lvwFiguras);
         groupBox2.Controls.Add(btnEliminar);
         groupBox2.Controls.Add(btnActualizar);
@@ -234,6 +236,17 @@ partial class FormPrincipalView
         groupBox2.TabIndex = 7;
         groupBox2.TabStop = false;
         groupBox2.Text = "Listado de Figuras";
+        // 
+        // btnProcesar
+        // 
+        btnProcesar.Location = new Point(442, 173);
+        btnProcesar.Margin = new Padding(4);
+        btnProcesar.Name = "btnProcesar";
+        btnProcesar.Size = new Size(106, 60);
+        btnProcesar.TabIndex = 7;
+        btnProcesar.Text = "Procesar Figuras";
+        btnProcesar.UseVisualStyleBackColor = true;
+        btnProcesar.Click += btnProcesar_Click;
         // 
         // FormPrincipalView
         // 
@@ -275,4 +288,5 @@ partial class FormPrincipalView
     private Label label4;
     private TextBox tbArea;
     private Button btnLimpiar;
+    private Button btnProcesar;
 }

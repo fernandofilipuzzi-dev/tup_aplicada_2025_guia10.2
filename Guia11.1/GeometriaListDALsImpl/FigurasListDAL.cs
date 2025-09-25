@@ -1,7 +1,7 @@
-﻿using Ejercicio.Models;
-using FigurasModels.DALs.Utils;
-using GeometriaListDALsImpl.Utilities;
+﻿using GeometriaListDALsImpl.Utilities;
+using GeometriaModels;
 using GeometriaModels.DALs;
+using GeometriaModels.DALs.Utilities;
 
 namespace GeometriaListDALsImpl;
 
@@ -106,5 +106,11 @@ public class FigurasListDAL : IFigurasDAL<ListTransaction>
         }
 
         return false;
+    }
+
+    async public Task ProcesarFiguras(IDALTransaction<ListTransaction>? transaccion = null)
+    {
+        //implementar...
+
     }
 }

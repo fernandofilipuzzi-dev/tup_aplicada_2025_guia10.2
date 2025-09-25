@@ -8,15 +8,15 @@ USE master;
 
 GO
 
-DROP DATABASE IF EXISTS GUIA10_1_Ejercicio1_DB;
+DROP DATABASE IF EXISTS Guia11_1_GeometriaDataBase_DB;
 
 GO
 
-CREATE DATABASE GUIA10_1_Ejercicio1_DB
+CREATE DATABASE Guia11_1_GeometriaDataBase_DB;
 
 GO
 
-USE GUIA10_1_Ejercicio1_DB;
+USE Guia11_1_GeometriaDataBase_DB;
 
 GO
 
@@ -49,8 +49,6 @@ VALUES
 SELECT TOP 1 @Id=Id FROM @Ids
 
 SELECT @Id
-
-
 
 
 SELECT f.Id,

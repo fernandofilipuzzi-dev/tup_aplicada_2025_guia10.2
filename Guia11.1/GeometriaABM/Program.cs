@@ -1,8 +1,8 @@
 using FigurasABM;
-using FigurasModels.DALs.Utils;
 using GeometriaListDALsImpl;
 using GeometriaListDALsImpl.Utilities;
 using GeometriaModels.DALs;
+using GeometriaModels.DALs.Utilities;
 using GeometriaMSQLDALsImpl;
 using GeometriaMSQLDALsImpl.Utilities;
 using GeometriaServices;
@@ -18,7 +18,7 @@ var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").B
 services.Configure<ConnectionStrings>(configuration.GetSection("ConnectionStrings"));
 #endregion
 
-/*
+
 #region Registro de DALs y transaccion
 services.AddScoped<IDALTransaction<SqlTransaction>, MSQLDALTransaction>();
 services.AddSingleton<IFigurasDAL<SqlTransaction>, FigurasMSQLDAL>();
@@ -27,10 +27,10 @@ services.AddSingleton<IFigurasDAL<SqlTransaction>, FigurasMSQLDAL>();
 #region Registro de servicios
 services.AddSingleton<IFigurasService, FigurasService<SqlTransaction>>();
 #endregion
-*/
+
 
 /**/
-
+/*
 #region Registro de DALs y transaccion
 services.AddScoped<IDALTransaction<ListTransaction>, ListDALTransaction>();
 services.AddSingleton<IFigurasDAL<ListTransaction>, FigurasListDAL>();
@@ -39,7 +39,7 @@ services.AddSingleton<IFigurasDAL<ListTransaction>, FigurasListDAL>();
 #region Registro de servicios
 services.AddSingleton<IFigurasService, FigurasService<ListTransaction>>();
 #endregion
-
+*/
 /**/
 
 #region vistas

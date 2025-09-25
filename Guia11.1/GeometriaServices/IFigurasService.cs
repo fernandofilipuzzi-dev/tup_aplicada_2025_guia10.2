@@ -1,5 +1,4 @@
-﻿
-using Ejercicio.Models;
+﻿using GeometriaModels;
 
 namespace GeometriaServices;
 
@@ -10,4 +9,6 @@ public interface IFigurasService
     Task CrearNuevo(FiguraModel objeto);
     Task Actualizar(FiguraModel objeto);
     Task Eliminar(int id);
+
+    Task ProcesarFiguras();
 }

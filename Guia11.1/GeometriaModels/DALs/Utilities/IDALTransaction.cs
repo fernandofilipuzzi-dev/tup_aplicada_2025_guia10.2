@@ -1,4 +1,4 @@
-﻿namespace FigurasModels.DALs.Utils;
+﻿namespace GeometriaModels.DALs.Utilities;
 
 public interface IDALTransaction<T> : IDisposable
 {

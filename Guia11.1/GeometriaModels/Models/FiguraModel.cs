@@ -1,4 +1,4 @@
-﻿namespace Ejercicio.Models;
+﻿namespace GeometriaModels;
 
 abstract public class FiguraModel
 {

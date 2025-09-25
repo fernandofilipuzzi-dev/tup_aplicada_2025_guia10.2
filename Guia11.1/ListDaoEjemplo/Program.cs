@@ -1,9 +1,8 @@
 ﻿
-
-using FigurasModels.DALs.Utils;
 using GeometriaListDALsImpl;
 using GeometriaListDALsImpl.Utilities;
 using GeometriaModels.DALs;
+using GeometriaModels.DALs.Utilities;
 using GeometriaServices;
 
 IDALTransaction<ListTransaction> transaction = new ListDALTransaction();

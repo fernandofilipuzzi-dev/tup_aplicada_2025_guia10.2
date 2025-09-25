@@ -1,4 +1,4 @@
-﻿using FigurasModels.DALs.Utils;
+﻿using GeometriaModels.DALs.Utilities;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
 
@@ -9,6 +9,11 @@ public class MSQLDALTransaction : IDALTransaction<SqlTransaction>
     private SqlTransaction? _transaccion;
     private SqlConnection? _sqlConnection;
     private readonly string _connectionString;
+
+    public MSQLDALTransaction(string connectionString)
+    {
+        _connectionString = connectionString;
+    }
 
     public MSQLDALTransaction(IOptions<ConnectionStrings> options)
     {

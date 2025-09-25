@@ -1,6 +1,7 @@
-﻿using FigurasModels.DALs.Utils;
+﻿
+using GeometriaModels.DALs.Utilities;
 
-namespace FigurasModels.DALs;
+namespace GeometriaModels.DALs;
 
 public interface IBaseDAL<E, K, T>
 {
@@ -8,5 +9,5 @@ public interface IBaseDAL<E, K, T>
     Task<E?> GetByKey(K id, IDALTransaction<T>? transaccion = null);
     Task<E?> Add(E nuevo, IDALTransaction<T>? transaccion = null);
     Task<bool> Save(E actualizar, IDALTransaction<T>? transaccion = null);
-    Task<bool> Remove(K id, IDALTransaction<T>? transaccion = null);
+    Task<bool> Remove(K id, IDALTransaction<T>? transaccion = null);   
 }

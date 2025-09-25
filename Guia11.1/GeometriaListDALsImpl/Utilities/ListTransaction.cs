@@ -1,5 +1,4 @@
-﻿using Ejercicio.Models;
-
+﻿
 namespace GeometriaListDALsImpl.Utilities;
 
 public class ListTransaction

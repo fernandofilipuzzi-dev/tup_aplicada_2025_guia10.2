@@ -1,4 +1,4 @@
-using Ejercicio.Models;
+using GeometriaModels;
 using GeometriaServices;
 using System.Drawing.Drawing2D;
 
@@ -54,12 +54,12 @@ public partial class FormPrincipalView : Form
 
     async private void btnAgregar_Click(object sender, EventArgs e)
     {
-        
+
         if (rbtTipoRectangulo.Checked)
         {
             figuraSelected ??= new RectanguloModel();
             RectanguloModel? r = figuraSelected as RectanguloModel;
-     
+
             double ancho = Convert.ToDouble(tbAncho.Text);
             double largo = Convert.ToDouble(tbLargo.Text);
 
@@ -70,7 +70,7 @@ public partial class FormPrincipalView : Form
         {
             figuraSelected ??= new CirculoModel();
             CirculoModel? c = figuraSelected as CirculoModel;
-            
+
             double radio = Convert.ToDouble(tbRadio.Text);
             c.Radio = radio;
         }
@@ -241,13 +241,13 @@ public partial class FormPrincipalView : Form
     private void rbtTipoRectangulo_CheckedChanged(object sender, EventArgs e)
     {
         if (sender == rbtTipoRectangulo)
-        { 
+        {
             tbAncho.Enabled = rbtTipoRectangulo.Checked;
             tbLargo.Enabled = rbtTipoRectangulo.Checked;
             tbRadio.Enabled = !rbtTipoRectangulo.Checked;
             tbRadio.Clear();
         }
-        else if(sender == rbtTipoCirculo)
+        else if (sender == rbtTipoCirculo)
         {
             tbAncho.Clear();
             tbLargo.Clear();
@@ -255,5 +255,10 @@ public partial class FormPrincipalView : Form
             tbLargo.Enabled = !rbtTipoCirculo.Checked;
             tbRadio.Enabled = rbtTipoCirculo.Checked;
         }
+    }
+
+    private void btnProcesar_Click(object sender, EventArgs e)
+    {
+        figuraService.ProcesarFiguras();
     }
 }

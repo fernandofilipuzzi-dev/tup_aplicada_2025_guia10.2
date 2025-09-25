@@ -3,7 +3,7 @@ USE master;
 
 GO
 
-USE GUIA6_1_Ejercicio1_DB;
+USE Guia11_1_GeometriaDataBase_DB;
 
 GO
 

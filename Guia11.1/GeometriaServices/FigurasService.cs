@@ -1,6 +1,6 @@
-﻿using Ejercicio.Models;
-using FigurasModels.DALs.Utils;
+﻿using GeometriaModels;
 using GeometriaModels.DALs;
+using GeometriaModels.DALs.Utilities;
 
 namespace GeometriaServices;
 
@@ -57,5 +57,10 @@ public class FigurasService<T> : IFigurasService
             await _transaction.RollbackAsync();
             //throw ex;
         }
+    }
+
+    async public Task ProcesarFiguras()
+    {
+        await _figurasDao.ProcesarFiguras();
     }
 }
